@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<link href="css/meplayer.css" rel="stylesheet" />
+		<style type="text/css">
+			.body {
+				height: 300px;
+				margin-top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+			<span class="mui-icon mui-icon-back"></span>
+		</button>
+			<h1 id="title" class="mui-title head-text">试听</h1>
+		</header>
+		<div class="body">
+			<div class="container">
+				<div class="music"></div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/meplayer.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<script type="text/javascript">
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+			//加载标题名称
+			var title = document.getElementById("title");
+			title.innerText = GetQueryString("id");
+
+			//获取url参数
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			//加载音乐
+			mePlayer({
+				music: {
+					src: 'http://om5.alicdn.com/902/6902/529713/1771180312_15836841_l.mp3?auth_key=a3a3b5c4471fcf5993bdfa349e4a2823-1482980400-0-null',
+					title: 'Dream Odyssey',
+					author: 'Mono',
+					cover: 'http://img.xiami.net/images/album/img2/6902/5297131376639792.jpeg',
+				},
+				target: '.music'
+			});
+		</script>
+	</body>
+
+</html>

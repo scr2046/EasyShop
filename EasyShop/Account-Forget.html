@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<script src="js/jquery-3.0.0.min.js"></script>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+			<span class="mui-icon mui-icon-back"></span>
+		</button>
+			<h1 class="mui-title head-text">找回密码</h1>
+		</header>
+		<div class="mui-content" style="margin-top: 30px;">
+			<div class="mui-card">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账号</label>
+						<input id="account" type="text" class="mui-input-clear" placeholder="输入手机号" />
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin: 10px 15px;">
+				<button onclick="submit()" type="button" class="mui-btn mui-btn-block btnLogin" style="padding: 5px 0px;">提交</button>
+			</div>
+		</div>
+		<script type="text/javascript">
+
+			function submit() {
+				var account = document.getElementById("account").value;
+				if(account == "") {
+					mui.toast("请输入");
+				} else {
+					mui.alert("已提交");
+				}
+			};
+		</script>
+		<script type="text/javascript">
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+		</script>
+	</body>
+
+</html>

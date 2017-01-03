@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>搜索结果</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<style type="text/css">
+			.mui-content {
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+
+	<body>]
+		<script type="text/javascript">
+			mui.plusReady(function() {
+					var self = plus.webview.currentWebview();
+					var cds = self.cds; //终于把查询结果传递过来了
+					var nums=cds.length;
+					if(nums==0){
+						plus.nativeUI.alert("无搜索结果");
+					}
+					var tableView = document.body.querySelector(".mui-table-view");
+					var viewCell = document.body.querySelector(".mui-table-view-cell");
+					//循环列表
+					mui.each(cds, function(index, cd) {
+						//console.log(cd.cdName);
+						var li = document.createElement("li");
+						li.className = "mui-table-view-cell mui-media";
+						li.id = cd.cdid;
+						li.innerHTML = '<div class="mui-slider-right mui-disabled"><a id="' + cd.cdid + '" class="Play mui-btn mui-btn-green">试听</a></div><div class="mui-slider-handle"><table width="100%"><tr><td><img class="mui-media-object mui-pull-left" src="images/For My Parents.jpeg" style="width: 50px;"><div class="mui-media-body"><label id="name">' + cd.cdName + '</label><br><label style="color: gray;">￥</label><label id="price" style="color: gray;">' + cd.price + '</label></div></td></tr></table></div>';
+						tableView.insertBefore(li, tableView.lastChild);
+					});
+				}
+
+			);
+		</script>
+		<div id="" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-card">
+					<ul id="list" class="mui-table-view">
+						<!--
+                        	作者：289435209@qq.com
+                        	时间：2016-12-29
+                        	描述：原始静态页面demo
+                        
+						<li id="1" class="mui-table-view-cell mui-media">
+							<div class="mui-slider-right mui-disabled">
+								<a id="1" class="Play mui-btn mui-btn-green">试听</a>
+							</div>
+							<div class="mui-slider-handle">
+								<table width="100%">
+									<tr>
+										<td>
+											<img class="mui-media-object mui-pull-left" src="images/For My Parents.jpeg" style="width: 50px;">
+											<div class="mui-media-body">
+												<label id="name"></label>
+												<br>
+												<label style="color: gray;">￥</label>
+												<label id="price" style="color: gray;"></label>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</li>
+						-->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			mui.init({
+					pullRefresh: {
+						container: '#refreshContainer',
+						down: {
+							height: 50,
+							auto: true,
+							contentdown: "下拉可以刷新",
+							contentover: "释放立即刷新",
+							contentrefresh: "正在刷新...",
+							callback: pulldownRefresh
+						}
+					}
+				}
+
+			);
+
+			function pulldownRefresh() {
+				mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+			};
+
+			mui(".mui-table-view").on("tap", ".mui-table-view-cell", function() {
+				mui.openWindow({
+					url: 'detail.html?id=' + this.getAttribute("id")
+				});
+			});
+
+			//侧滑事件
+			(function($) {
+				//试听
+				$('#list').on('tap', '.Play', function(event) {
+					mui.openWindow({
+						url: "player.html?id=" + this.getAttribute("id")
+					});
+				});
+			})(mui);
+		</script>
+	</body>
+
+</html>

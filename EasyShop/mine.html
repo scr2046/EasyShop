@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		
+		<style type="text/css">
+			.head {
+				padding: 8% 0px 13% 0px;
+				background: url(images/bg.jpeg);
+				background-position: center center;
+				background-size: 100% auto;
+			}
+			
+			.icon {
+				text-align: center;
+			}
+			
+			.icon div {
+				width: 4em;
+				height: 4em;
+				padding: 0px;
+				border-radius: 50%;
+				border: 2px solid white;
+				color: gray;
+				margin: 0px auto;
+				margin-bottom: 5px;
+			}
+			
+			.icon {
+				width: 4em;
+				height: 4em;
+				padding: 0px;
+				border-radius: 50%;
+				color: gray;
+				margin: 0px auto;
+				margin-bottom: 5px;
+				background-image: url(images/user.png);
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: contain;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content" style="height: 100%;">
+			<div class="head">
+				<div id="mineImg" class="icon">
+					<div>
+					</div>
+					<span id="mineName" class="head-text">用户名</span>
+				</div>
+			</div>
+			<ul class="mui-table-view" style="margin-top: 10px;">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="">
+						<span class="mui-icon mui-icon-bars"></span> 我的订单
+					</a>
+				</li>
+				<li id="update-pos" class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="">
+						<span class="mui-icon mui-icon-location"></span> 管理地址
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 15px;">
+				<li id="update-name" class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="">
+						<span class="mui-icon mui-icon-person"></span> 个人信息
+					</a>
+				</li>
+				<li id="update-psw" class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="">
+						<span class="mui-icon mui-icon-locked"></span> 修改密码
+					</a>
+				</li>
+			</ul>
+			<ul id="info" class="mui-table-view" style="margin-top: 15px;">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="">
+						<span class="mui-icon mui-icon-info"></span> 用户反馈
+					</a>
+				</li>
+			</ul>
+			<ul id="exit" class="mui-table-view" style="margin-top: 15px;margin-bottom: 15px;">
+				<li class="mui-table-view-cell" style="text-align: center;">
+					<span style="color: indianred;">退出登录</span>
+				</li>
+			</ul>
+		</div>
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+		</script>
+		<script type="text/javascript">
+			var mineImg = document.getElementById("mineImg");
+			//加载头像
+			if(mui.os.plus) {
+				plus.io.resolveLocalFileSystemURL("_doc/head.jpg", function(entry) {
+					var s = entry.fullPath + "?version=" + new Date().getTime();
+					drawIcon(s);
+				}, function(e) {})
+			}
+			//点击更换头像
+			mineImg.addEventListener("tap", function() {
+				var btnArray = [{
+					title: "拍照"
+				}, {
+					title: "从相册里选择"
+				}];
+				plus.nativeUI.actionSheet({
+					title: "设置头像",
+					cancel: "取消",
+					buttons: btnArray
+				}, function(e) {
+					var index = e.index;
+					switch(index) {
+						case 0:
+							break;
+						case 1:
+							getImage();
+							break;
+						case 2:
+							plus.gallery.pick(function(path) {
+								//图片存储到本地文件夹
+								plus.io.resolveLocalFileSystemURL(path, function(entry) {
+									plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+										root.getFile("head.jpg", {}, function(file) {
+											//文件已存在
+											file.remove(function() {
+												console.log("file remove success");
+												entry.copyTo(root, 'head.jpg', function(e) {
+														var e = e.fullPath + "?version=" + new Date().getTime();
+														drawIcon(e);
+													},
+													function(e) {
+														console.log('copy image fail:' + e.message);
+													});
+											}, function() {
+												console.log("delete image fail:" + e.message);
+											});
+										}, function() {
+											//文件不存在
+											entry.copyTo(root, 'head.jpg', function(e) {
+													var path = e.fullPath + "?version=" + new Date().getTime();
+													drawIcon(path);
+												},
+												function(e) {
+													console.log('copy image fail:' + e.message);
+												});
+										});
+									}, function(e) {
+										console.log("get _www folder fail");
+									})
+								}, function(e) {
+									console.log("读取拍照文件错误：" + e.message);
+								});
+							}, function(e) {
+								//console.log("取消选择图片");
+							}, {
+								filter: "image"
+							});
+							break;
+					} //switch(index)
+				}); //actionSheet
+			}); //mineImg.addEventListener
+			//退出登录
+			var exit = document.getElementById("exit");
+			exit.addEventListener("tap", function() {
+				var check = ["是", "否"];
+				mui.confirm("退出登录？", "", check, function(e) {
+					if(e.index == 0) {
+						mui.back();
+					} else {
+						//不退出
+					}
+				});
+			});
+
+			//用户反馈
+			var info = document.getElementById("info");
+			info.addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'info.html'
+				});
+			});
+
+			//修改密码
+			var updatepsw = document.getElementById("update-psw");
+			updatepsw.addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'update-Psw.html'
+				});
+			});
+			//个人信息
+			var updatename = document.getElementById("update-name");
+			updatename.addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'update-name.html'
+				});
+			});
+			//管理地址
+			var updatepos = document.getElementById("update-pos");
+			updatepos.addEventListener("tap", function() {
+				mui.openWindow({
+					url: 'update-pos.html'
+				});
+			});
+
+			//画出头像
+			function drawIcon(path) {
+				mineImg.style.backgroundImage = "url(" + path + ")";
+				mineImg.style.backgroundPosition = "center";
+				mineImg.style.backgroundRepeat = "no-repeat";
+				mineImg.style.backgroundSize = "150px";
+			};
+			//拍照
+			function getImage() {
+				var c = plus.camera.getCamera();
+				c.captureImage(function(e) {
+					plus.io.resolveLocalFileSystemURL(e, function(entry) {
+						var s = entry.toLocalURL() + "?version=" + new Date().getTime();
+						drawIcon(s);
+					}, function(e) {
+						console.log("读取拍照文件错误：" + e.message);
+					});
+				}, function(s) {
+					console.log("error" + s);
+				}, {
+					filename: "_doc/head.jpg"
+				})
+			};
+		</script>
+	</body>
+
+</html>

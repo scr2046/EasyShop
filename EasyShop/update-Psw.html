@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+			<span class="mui-icon mui-icon-back"></span>
+		</button>
+			<h1 class="mui-title head-text">修改密码</h1>
+		</header>
+		<div class="mui-content" style="margin-top: 15px;">
+			<div class="mui-card" style="margin-top: 30px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账号</label>
+						<input id="account" type="text" class="mui-input-clear" placeholder="输入手机号" />
+					</div>
+					<div class="mui-input-row">
+						<label>新密码</label>
+						<input id="password" type="password" class="mui-input-password" placeholder="输入密码" />
+					</div>
+					<div class="mui-input-row">
+						<label>确认密码</label>
+						<input id="repassword" type="password" class="mui-input-password" placeholder="确认密码" />
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin: 10px 15px;">
+				<button id="btnUpdate" type="button" class="mui-btn mui-btn-block btnLogin" style="padding: 5px 0px;">确认</button>
+			</div>
+		</div>
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript">
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+		</script>
+		<script type="text/javascript">
+			var btnUpdate=document.getElementById("btnUpdate");
+			btnUpdate.addEventListener("tap",function(){
+				update();
+			});
+			function update() {
+				var account = document.getElementById("account").value;
+				var password = document.getElementById("password").value;
+				var repassword = document.getElementById("repassword").value;
+				if(account == "" || password == "") {
+					mui.toast("请输入手机号与密码");
+				} else {
+					if(password == repassword) {
+						var data = "account=" + account + "&password=" + password;
+						//修改密码(修改完成之后要退出重新登录)
+						mui.toast("修改成功");
+					} else {
+						mui.toast("密码确认错误");
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>

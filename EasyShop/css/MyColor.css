@@ -1,0 +1,35 @@
+.head {
+	background-color: #41cea9;
+}
+
+.head-text {
+	color: white;
+}
+
+.btnLogin {
+	background-color: #41cea9;
+	color: white;
+}
+
+.link {
+	color: #41cea9;
+	font-size: 1em;
+}
+
+.mui-icon-back {
+	color: white;
+}
+
+/*价格样式，上面那些我也忘了是什么了=.=*/
+#realPrice {
+	text-decoration: line-through;
+}
+#price{
+	color: inherit;
+}
+
+/*分类菜单链接*/
+.mui-control-item{
+	font-size: 1em;
+	color: #41cea9;
+}

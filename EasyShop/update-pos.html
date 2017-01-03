@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-3.0.0.min.js"></script>
+
+		<script type="text/javascript">
+			// 扩展API加载完毕后调用onPlusReady回调函数 
+			document.addEventListener("plusready", onPlusReady, false);
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			function onPlusReady() {
+				plus.geolocation.getCurrentPosition(function(p) {
+					//mui.alert("Geolocation\nLatitude:" + p.coords.latitude + "\nLongitude:" + p.coords.longitude + "\nAltitude:" + p.coords.altitude);
+					mui.alert("检测到您的地址："+p.address.province+p.address.city+p.address.district+p.address.street);
+					var city=document.getElementById("city");
+					var pos=document.getElementById("pos");
+					city.innerText=p.address.province+" "+p.address.city+" "+p.address.district;
+					pos.value=p.address.street;
+					var postalCode=document.getElementById("postalCode");
+					postalCode.value=p.address.postalCode;
+				}, function(e) {
+					mui.alert("获取地址失败：" + e.message);
+				});
+			}
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+
+		<style type="text/css">
+			.body {
+				margin-top: 50px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+			<span class="mui-icon mui-icon-back"></span>
+		</button>
+			<h1 class="mui-title head-text">地址管理</h1>
+			<button id="add" type="button" class="mui-btn mui-btn-link mui-pull-right">
+			<span class="mui-icon mui-icon-plusempty"style="color: white;"></span>
+		</button>
+		</header>
+		<div class="mui-content" style="margin-top: 15px;">
+			<div class="mui-card" style="margin-top: 30px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>城市</label>
+						<label id="city" style="width: 200px;color: gray;"></label>
+					</div>
+					<div class="mui-input-row">
+						<label>详细地址</label>
+						<input id="pos" type="text" class="mui-input-text" placeholder="输入详细地址" />
+					</div>
+					<div class="mui-input-row">
+						<label>邮政编码</label>
+						<input id="postalCode" type="text" class="mui-input-text" placeholder="输入邮政编码" />
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin: 10px 15px;">
+				<button id="btnSave" type="button" class="mui-btn mui-btn-block btnLogin" style="padding: 5px 0px;">保存</button>
+			</div>
+		</div>
+		<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.picker.js"></script>
+		<script src="js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					//初始化城市数据
+					var cityPicker3 = new $.PopPicker({
+						layer: 3
+					});
+					cityPicker3.setData(cityData3);
+					var city = document.getElementById("city");	
+					
+					//弹出选择框
+					var btAdd = document.getElementById("add");
+					btAdd.addEventListener("tap", function(event) {
+						cityPicker3.show(function(items) {
+							city.innerText = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+					}, false);
+				});
+			})(mui, document);
+
+			//保存
+			var btnSave=document.getElementById("btnSave");
+			btnSave.addEventListener("tap",function(){
+				save();
+			});
+			function save() {
+				var city = document.getElementById("city").innerText;
+				var pos = document.getElementById("pos").value;
+				var check = ["是", "否"];
+				mui.confirm("您的地址为：" + city + " " + pos, "确认地址", check, function(e) {
+					if(e.index == 0) {
+						//var data;
+						mui.toast("保存成功");
+					} else {
+						//不退出
+					}
+				});
+			};
+		</script>
+	</body>
+
+</html>

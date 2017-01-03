@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+			<span class="mui-icon mui-icon-back"></span>
+		</button>
+			<h1 class="mui-title head-text">注册</h1>
+		</header>
+		<div class="mui-content" style="margin-top: 15px;">
+			<div class="mui-card" style="margin-top: 30px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账号</label>
+						<input id="account" type="text" class="mui-input-clear" placeholder="输入手机号" />
+					</div>
+					<div class="mui-input-row">
+						<label>密码</label>
+						<input id="password" type="password" class="mui-input-password" placeholder="输入密码" />
+					</div>
+					<div class="mui-input-row">
+						<label>确认密码</label>
+						<input id="repassword" type="password" class="mui-input-password" placeholder="确认密码" />
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin: 10px 15px;">
+				<button onclick="register()" type="button" class="mui-btn mui-btn-block btnLogin" style="padding: 5px 0px;">注册</button>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript">
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+		</script>
+		<script type="text/javascript">
+			function register() {
+				var account = document.getElementById("account").value;
+				var password = document.getElementById("password").value;
+				var repassword = document.getElementById("repassword").value;
+				if(account == "" || password == "") {
+					mui.toast("请输入手机号与密码");
+				} else {
+					if(password == repassword) {
+						var data = "account=" + account + "&password=" + password;
+						$.ajax({
+							url: "http://1591012o2a.iask.in/EsAccount/Register",
+							type: "post",
+							dataType: "json",
+							data: data,
+							success: function(data) {
+								if(data.result == "success") {
+									mui.alert('现在就去登录', '注册成功', function() {
+										mui.back();
+									});
+								} else {
+									mui.toast("注册失败");
+								}
+							},
+							error: function() {
+								mui.toast("服务器爆炸啦！");
+							}
+						});
+
+					} else {
+						mui.toast("密码确认错误");
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>

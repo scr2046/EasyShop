@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<link href="css/mui.indexedlist.css" rel="stylesheet" />
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.indexedlist.js"></script>
+		<style>
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			
+			.mui-bar {
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title link">风格</h1>
+		</header>
+		<div class="mui-content">
+			<div id='list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索">
+				</div>
+				<div class="mui-indexed-list-bar">
+					<a>A</a>
+					<a>B</a>
+					<a>C</a>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul class="mui-table-view">
+						<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">流行</li>
+						<li data-value="GY" data-tags="GuoYuLiuXing" class="mui-table-view-cell mui-indexed-list-item">国语流行</li>
+						<li data-value="YY" data-tags="YueYuLiuXing" class="mui-table-view-cell mui-indexed-list-item">粤语流行</li>
+						<li data-value="OM" data-tags="OuMeiLiuXing" class="mui-table-view-cell mui-indexed-list-item">欧美流行</li>
+						<li data-value="HG" data-tags="HanGuoLiuXing" class="mui-table-view-cell mui-indexed-list-item">韩国流行</li>
+						<li data-group="B" class="mui-table-view-divider mui-indexed-list-group">摇滚</li>
+						<li data-value="LXYG" data-tags="LiuXingYaoGun" class="mui-table-view-cell mui-indexed-list-item">流行摇滚</li>
+						<li data-value="PK" data-tags="PengKe" class="mui-table-view-cell mui-indexed-list-item">朋克</li>
+						<li data-value="DLYG" data-tags="DuLiYaoGun" class="mui-table-view-cell mui-indexed-list-item">独立摇滚</li>
+						<li data-value="YSYG" data-tags="YingShiYaoGun" class="mui-table-view-cell mui-indexed-list-item">英式摇滚</li>
+						<li data-value="LLYG" data-tags="LingLeiYaoGun" class="mui-table-view-cell mui-indexed-list-item">另类摇滚</li>
+						<li data-group="C" class="mui-table-view-divider mui-indexed-list-group">民谣</li>
+						<li data-value="MYLX" data-tags="MinYaoLiuXing" class="mui-table-view-cell mui-indexed-list-item">民谣流行</li>
+						<li data-value="DLMY" data-tags="DuLiMinYao" class="mui-table-view-cell mui-indexed-list-item">独立民谣</li>
+						<li data-value="XYMY" data-tags="XiaoYuanMinYao" class="mui-table-view-cell mui-indexed-list-item">校园民谣</li>
+						<li data-value="CSMY" data-tags="ChengShiMinYao" class="mui-table-view-cell mui-indexed-list-item">城市民谣</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.indexedlist.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			mui.ready(function() {
+				var header = document.querySelector('header.mui-bar');
+				var list = document.getElementById('list');
+				//calc hieght
+				list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+				//create
+				window.indexedList = new mui.IndexedList(list);
+			});
+			//监听点击事件
+			mui(".mui-table-view").on("tap",".mui-table-view-cell",function(){
+				plus.nativeUI.toast(this.innerText);
+			});
+		</script>
+	</body>
+
+</html>

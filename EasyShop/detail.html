@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+
+		<style type="text/css">
+			.body1 {
+				margin-top: 50px;
+			}
+			
+			.body2 {
+				height: 150px;
+			}
+			
+			#img {
+				width: 140px;
+				margin-left: 10%;
+				margin-top: 1%;
+			}
+			
+			.body3 {
+				height: 100%;
+			}
+			
+			#comm {
+				color: gray;
+			}
+			#share{
+				color: gray;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav head">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-left">
+				<span class="mui-icon mui-icon-back"></span>
+			</button>
+			<h1 class="mui-title head-text">专辑</h1>
+			<button id="btnBuy" type="button" class="mui-btn mui-btn-link mui-pull-right">
+				<span class="head-text">购买</span>
+			</button>
+		</header>
+
+		<div class="body1 mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="body2 mui-media">
+					<img id="img" class="mui-media-object mui-pull-left" src="images/For My Parents.jpeg" />
+					<div class="mui-media-body" style="width: 90%;">
+						<label id="name" class="mui-pull-right">For My Parents</label>
+						<br>
+						<button id="author" type="button" class="mui-btn mui-btn-grey mui-pull-right">Mono</button>
+						<br>
+						<br>
+						<img id="heart" class="mui-pull-right" src="images/shoucang.png" style="width: 30px;" />
+						<br>
+						<br>
+						<button id="btnComm" type="button" class="mui-btn mui-btn-link mui-pull-right">
+							<span id="comm" class="mui-icon mui-icon-chat">10</span>
+						</button>
+						<button id="btnShare" type="button" class="mui-btn mui-btn-link mui-pull-right">
+							<span id="share" class="mui-icon mui-icon-redo">分享</span>
+						</button>
+					</div>
+				</div>
+				<hr>
+				<img id="imgPlay" src="images/play.png" style="width: 30px;margin-left: 5%;" />
+				<div class="body3 mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">Legend</li>
+						<li class="mui-table-view-cell">Nostalgia</li>
+						<li class="mui-table-view-cell">Dream Odyssey</li>
+						<li class="mui-table-view-cell">Unseen Harbor</li>
+						<li class="mui-table-view-cell">A Quiet Place (Together We Go)</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+			
+			var btnBack=document.getElementById("btnBack");
+			btnBack.addEventListener("tap",function(){
+				mui.back();
+			});
+			
+			var id=GetQueryString("id");
+			function buy() {
+				//买啦！！！！
+			};
+			//收藏
+			var heart = document.getElementById("heart");
+			var checkHeart = 0; //默认未收藏
+			heart.addEventListener("tap", function() {
+				if(checkHeart == 0) {
+					heart.src = "images/heart.png";
+					checkHeart = 1;
+				} else {
+					heart.src = "images/shoucang.png";
+					checkHeart = 0;
+				}
+			});
+			//播放
+			var play = document.getElementById("imgPlay");
+			play.addEventListener("tap", function() {
+				mui.openWindow({
+					url: "player.html?id="+id
+				});
+			});
+			//获取url参数
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+		</script>
+	</body>
+
+</html>

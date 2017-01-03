@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.cookie.js" type="text/javascript"></script>
+		<style type="text/css">
+			.body1 {
+				margin-top: 60px;
+				margin-left: 10px;
+				height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button id="btnBack" type="button" class="mui-btn mui-btn-link mui-pull-right">
+			<label class="link">取消</label>
+		</button>
+			<div class="mui-input-row mui-search">
+				<input id="keyword" type="search" class="mui-input-clear" placeholder="搜索添加专辑、艺人" onblur="doSearch()">
+			</div>
+		</header>
+
+		<div class="body1">
+			<label style="color: gray;">热门</label><br>
+			<button id="btnPop" type="button" class="mui-btn mui-btn-success mui-btn-outlined">陈奕迅</button>
+			<button id="btnPop" type="button" class="mui-btn mui-btn-success mui-btn-outlined">Mono</button>
+			<button id="btnPop" type="button" class="mui-btn mui-btn-success mui-btn-outlined">张学友</button>
+			<button id="btnPop" type="button" class="mui-btn mui-btn-success mui-btn-outlined">王菲</button>
+		</div>
+		<br>
+		<label style="color: gray;margin-left: 10px;">最近搜索</label><br>
+		<div class="mui-card">
+			<ul class="mui-table-view">
+				<li id="1" class="mui-table-view-cell mui-media">
+					<label id="keyHis" style="color: gray;"></label>
+				</li>
+				<li id="0" class="mui-table-view-cell mui-media">
+					<div style="text-align: center;">
+						<span class="mui-icon mui-icon-trash" />
+						<button class="mui-btn mui-btn-link" type="button" style="color: gray;">清除记录</button>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var navTitle;
+
+			mui.plusReady(function() {
+
+				plus.navigator.setStatusBarBackground("#41cea9");
+
+				//设置只支持竖屏幕显示
+				plus.screen.lockOrientation("portrait-primary");
+			});
+			$(document).ready(function() {
+				var keyHsi = document.getElementById("keyHis");
+				if(keyHsi != "") {
+					keyHsi.innerText = $.cookie("keyword");
+				} else {
+					keyHsi.innerText = "";
+				}
+			});
+
+			var btnBack = document.getElementById("btnBack");
+			btnBack.addEventListener("tap", function() {
+				back();
+			});
+
+			function back() {
+				mui.back();
+			};
+			//搜索(搜索框输入)
+			function doSearch() {
+				var keyword = document.getElementById("keyword").value;
+				if(keyword != "") {
+					search(keyword);
+				}
+			};
+			//热门
+			function pop(keyword) {
+				search(keyword);
+			};
+			mui(".body1").on('tap', "#btnPop", function() {
+				pop(this.innerText);
+			});
+			//点击历史记录
+			mui(".mui-table-view").on('tap', '.mui-table-view-cell', function() {
+				var id = this.getAttribute("id");
+				if(id == 0) {
+					//执行清空操作
+					var check = ["是", "否"];
+					mui.confirm("清除记录？", "", check, function(e) {
+						if(e.index == 0) {
+							$.cookie("keyword", "");
+						} else {
+							//不清除
+						}
+					});
+				} else {
+					//执行搜索
+					search(this.innerText);
+				}
+			});
+
+			//发送搜索请求
+			function search(keyword) {
+				//加入cookie
+				$.cookie("keyword", keyword);
+				//var data = "keyword=" + keyword;
+				mui.post('http://1591012o2a.iask.in/EsAccount/Search', {
+					keyword: keyword
+				}, function(data) {
+					//服务器返回响应
+					if(data.result == "success"){
+						var cds=eval(data.cds);//查询结果列表
+						mui.openWindow({
+							url:'cds.html',
+							styles:{
+								top:'50px'
+							},
+							extras:{
+								cds:cds
+							}
+						});
+					}
+				}, 'json');
+			};
+		</script>
+	</body>
+
+</html>

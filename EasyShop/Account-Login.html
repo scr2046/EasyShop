@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/MyColor.css" rel="stylesheet" />
+		<script src="js/jquery-3.0.0.min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			// 扩展API加载完毕后调用onPlusReady回调函数 
+			document.addEventListener("plusready", onPlusReady, false);
+
+			function onPlusReady() {
+				document.addEventListener("netchange", onNetChange, false);
+			}
+
+			function onNetChange() {
+				var nt = plus.networkinfo.getCurrentType();
+				switch(nt) {
+					case plus.networkinfo.CONNECTION_ETHERNET:
+					case plus.networkinfo.CONNECTION_WIFI:
+						mui.toast("已连接WIFI!");
+						break;
+					case plus.networkinfo.CONNECTION_CELL2G:
+					case plus.networkinfo.CONNECTION_CELL3G:
+					case plus.networkinfo.CONNECTION_CELL4G:
+						mui.toast("当前为运营网络");
+						break;
+					default:
+						mui.alert("没有网络连接！");
+						break;
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav head">
+			<button id="regist" type="button" class="mui-btn mui-btn-link mui-pull-right">
+			<span class="head-text">注册</span>
+		</button>
+			<h1 class="mui-title head-text">EasyShop</h1>
+		</header>
+		<div class="mui-content">
+			<div style="margin-top: 30px; text-align: center;">
+				<img src="images/image_setting.png" style="width: 70px;" />
+			</div>
+			<div class="mui-card" style="margin-top: 30px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>账号</label>
+						<input id="account" type="text" class="mui-input-clear" placeholder="请输入手机号" />
+					</div>
+					<div class="mui-input-row">
+						<label>密码</label>
+						<input id="password" type="password" class="mui-input-password" placeholder="请输入密码" />
+					</div>
+				</form>
+			</div>
+			<div class="mui-button-row" style="margin: 15px 15px;">
+				<button id="btnLogin" type="button" class="mui-btn mui-btn-block btnLogin" style="padding: 10px 0px;">登录</button>
+			</div>
+			<div class="mui-button-row" style="width: 300px;margin-left: 10%;">
+				<button id="btnGuest" type="button" class="mui-btn mui-btn-link link mui-pull-left">我就逛逛，不买</button>
+				<button id="btnForget" type="button" class="mui-btn mui-btn-link link mui-pull-right">忘记密码</button>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var navTitle;
+
+			mui.plusReady(function() {
+				//优化标题栏
+				if(mui.os.ios) {
+					plus.navigator.setStatusBarBackground("#41cea9");
+					plus.navigator.setStatusBarStyle('UIStatusBarStyleBlackOpaque');
+					//设置只支持竖屏幕显示
+					plus.screen.lockOrientation("portrait-primary");
+				}
+
+			});
+			
+			var btnLogin=document.getElementById("btnLogin");
+			btnLogin.addEventListener("tap",function(){
+				login();
+			});
+			function login() {
+				var account = document.getElementById("account").value;
+				var password = document.getElementById("password").value;
+				if(account == "" || password == "") {
+					mui.toast("账号或密码不能为空");
+				} else {
+					var data = "account=" + account + "&password=" + password;
+					$.ajax({
+						url: "http://1591012o2a.iask.in/EsAccount/login",
+						type: "post",
+						dataType: "json",
+						data: data,
+						success: function(data) {
+							if(data.result == "success") {
+								mui.openWindow({
+									url: 'main-home.html'
+								});
+							} else {
+								mui.toast("用户名或密码错误");
+							}
+						},
+						error: function() {
+							mui.toast("服务器爆炸啦！");
+						}
+					});
+				}
+			};
+
+			var regist=document.getElementById("regist");
+			regist.addEventListener("tap",function(){
+				register();
+			});
+			function register() {
+				mui.openWindow({
+					url: 'Account-Register.html'
+				});
+			};
+
+			var btnGuest=document.getElementById("btnGuest");
+			btnGuest.addEventListener("tap",function(){
+				guest();
+			});
+			function guest() {
+				mui.openWindow({
+					url: 'main-home.html'
+				});
+			};
+
+			var btnForget=document.getElementById("btnForget");
+			btnForget.addEventListener("tap",function(){
+				forget();
+			});
+			function forget() {
+				mui.openWindow({
+					url: 'Account-Forget.html'
+				});
+			};
+		</script>
+	</body>
+
+</html>
